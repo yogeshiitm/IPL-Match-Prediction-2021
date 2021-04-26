@@ -35,7 +35,10 @@ def predictRuns(testInput):
         df2[i+'_batsman'] = 0
         
     for i in range(len(df2)):
-        lst = df2['batsmen'][i].split(',')
+        try:
+            lst = df2['batsmen'][i].split(', ')
+        except:
+            lst = df2['batsmen'][i].split(',')
         #print(lst)
         for batsman in lst:
             df2[batsman+'_batsman'] = 1
@@ -43,11 +46,18 @@ def predictRuns(testInput):
         df2[i+'_bowler'] = 0
         
     for i in range(len(df2)):
-        lst = df2['bowlers'][i].split(',')
+        try:
+            lst = df2['bowlers'][i].split(', ')
+        except:
+            lst = df2['bowlers'][i].split(',')
         for bowler in lst:
             df2[bowler+'_bowler'] = 1
     #Prediction
-    y_pred = reg.predict(pca.transform(df2.iloc[:, 7:].values))
+    try:
+        y_pred = reg.predict(pca.transform(df2.iloc[:, 7:].values))
+    except:
+        y_pred = reg.predict(pca.transform(df2.iloc[:, 6:].values))
+
     prediction = round(y_pred[0])
 
     return prediction
